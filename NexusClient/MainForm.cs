@@ -732,30 +732,11 @@ namespace Nexus.Client
 		}
 
 		/// <summary>
-		/// Updates the Bottom Bar Feedback Counter
+		/// Updates the Bottom Bar Counter
 		/// </summary>
 		private void UpgradeBottomBarFeedbackCounter()
 		{
-			int intPartialTasks = 0;
-
-			foreach (IBackgroundTaskSet ibt in amcActivateModsMonitor.ViewModel.Tasks)
-			{
-				if (ibt.GetType() == typeof(ModInstaller))
-				{
-					if (((ModInstaller)ibt).IsCompleted)
-						intPartialTasks++;
-				}
-				else if (ibt.GetType() == typeof(ModUninstaller))
-				{
-					if (((ModUninstaller)ibt).IsCompleted)
-						intPartialTasks++;
-				}
-				else if (ibt.GetType() == typeof(ModUpgrader))
-				{
-					if (((ModUpgrader)ibt).IsCompleted)
-						intPartialTasks++;
-				}
-			}
+			int intCompletedTasks = amcActivateModsMonitor.ViewModel.Tasks.Count(x => x.IsCompleted == true);
 
 			if (amcActivateModsMonitor.ViewModel.Tasks.Count == 0)
 			{
@@ -764,7 +745,7 @@ namespace Nexus.Client
 				tsbLoader.Visible = false;
 			}
 			else
-				tlbBottomBarFeedbackCounter.Text = "(" + intPartialTasks + "/" + amcActivateModsMonitor.ViewModel.Tasks.Count + ")";
+				tlbBottomBarFeedbackCounter.Text = "(" + intCompletedTasks + "/" + amcActivateModsMonitor.ViewModel.Tasks.Count + ")";
 		}
 
 		/// <summary>
